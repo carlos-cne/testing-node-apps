@@ -1,19 +1,19 @@
-import _ from 'lodash'
-import {generateUUID} from './utils'
+import _ from 'lodash';
+import { generateUUID } from './utils';
 
-let listItems = []
+let listItems = [];
 
 async function query(queryObj) {
-  return _.filter(listItems, queryObj)
+  return _.filter(listItems, queryObj);
 }
 
 async function create(listItemData) {
-  const {bookId, ownerId} = listItemData
+  const { bookId, ownerId } = listItemData;
   if (!bookId) {
-    throw new Error(`New listItems must have a bookId`)
+    throw new Error(`New listItems must have a bookId`);
   }
   if (!ownerId) {
-    throw new Error(`New listItems must have an ownerId`)
+    throw new Error(`New listItems must have an ownerId`);
   }
 
   const newListItem = {
@@ -23,40 +23,40 @@ async function create(listItemData) {
     finishDate: null,
     startDate: Date.now(),
     ...listItemData,
-  }
-  listItems = [...listItems, newListItem]
-  return newListItem
+  };
+  listItems = [...listItems, newListItem];
+  return newListItem;
 }
 
 async function readById(id) {
-  return _.find(listItems, {id})
+  return _.find(listItems, { id });
 }
 
 async function update(listItemId, updates) {
-  const listItem = await readById(listItemId)
+  const listItem = await readById(listItemId);
   if (!listItem) {
-    return null
+    return null;
   }
   const updatedListItem = {
     ...listItem,
     ...updates,
-  }
-  listItems[listItems.indexOf(listItem)] = updatedListItem
-  return updatedListItem
+  };
+  listItems[listItems.indexOf(listItem)] = updatedListItem;
+  return updatedListItem;
 }
 
 async function remove(id) {
-  listItems = listItems.filter(li => li.id !== id)
+  listItems = listItems.filter((li) => li.id !== id);
 }
 
 async function insertMany(manyListItems) {
-  listItems = [...listItems, ...manyListItems]
+  listItems = [...listItems, ...manyListItems];
 }
 
 async function drop() {
-  listItems = []
+  listItems = [];
 }
 
-export {query, create, readById, update, remove, insertMany, drop}
+export { query, create, readById, update, remove, insertMany, drop };
 
 /* eslint require-await:0 */
